@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ActionSheetTextBase">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ActionSheetTextBase.Title">
+        <item name="android:textSize">12sp</item>
+
+    </style>
+</resources>
