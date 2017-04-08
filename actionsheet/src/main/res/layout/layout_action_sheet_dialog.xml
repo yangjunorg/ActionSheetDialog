@@ -4,23 +4,37 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_title"
+    <LinearLayout
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:background="@drawable/radios"
+        android:orientation="vertical">
+        <TextView
+            style="@style/ActionSheetTextBase.Title"
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/ActionSheetTextBase.Message"
+            android:id="@+id/tv_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <ScrollView
+            style="@style/ActionSheetTextBase.Content"
+            android:id="@+id/scrollView_sheet_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
 
     <TextView
-        android:id="@+id/tv_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <ScrollView
-        android:id="@+id/scrollView_sheet_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
+        style="@style/ActionSheetTextBase.Cancel"
         android:id="@+id/tv_cancel"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

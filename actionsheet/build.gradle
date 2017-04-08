@@ -1,5 +1,8 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 
+version="1.0.0"
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -19,6 +22,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+    }
 }
 
 dependencies {
@@ -28,4 +35,75 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.2.0'
     testCompile 'junit:junit:4.12'
+}
+
+def siteUrl = 'https://github.com/JohnyPeng/ActionSheetDialog'      // 项目的主页
+def gitUrl = 'https://github.com/JohnyPeng/ActionSheetDialog.git'   // Git仓库的url
+group = "com.android.actionsheetdialog"       // Maven Group ID for the artifact，一般填你唯一的包名
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                // Add your description here
+                name 'A bottom dialog like IOS'     //项目描述
+                url siteUrl
+                // Set your license
+                licenses {
+                    license {
+                        name 'Massachusetts Institute of Technology'
+                        url 'http://www.opensource.org/licenses/mit-license.php'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'JonnyPeng'        //填写的一些基本信息
+                        name 'Jonny'
+                        email 'godteen.peng@gmail.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        userOrg = "jonnypeng"//JCenter上创建的的Organization
+        repo = "custom"//你要上传的库的名字
+        name = "ActionSheetDialog"    //发布到JCenter上的项目名字
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["MIT"]
+        publish = true
+    }
 }

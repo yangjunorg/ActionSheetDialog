@@ -6,7 +6,20 @@
     </style>
 
     <style name="ActionSheetTextBase.Title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#d4000000</item>
+    </style>
+    <style name="ActionSheetTextBase.Message">
+        <item name="android:textColor">#e0e0e0</item>
         <item name="android:textSize">12sp</item>
+    </style>
+    <style name="ActionSheetTextBase.Content">
 
+    </style>
+    <style name="ActionSheetTextBase.Cancel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#f44336</item>
+        <item name="android:text">取消</item>
+        <item name="android:background">@drawable/radios</item>
     </style>
 </resources>
