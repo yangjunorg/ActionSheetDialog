@@ -21,5 +21,7 @@
         <item name="android:textColor">#f44336</item>
         <item name="android:text">取消</item>
         <item name="android:background">@drawable/radios</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
     </style>
 </resources>

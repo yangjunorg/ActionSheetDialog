@@ -188,7 +188,7 @@ public class ActionSheetDialog extends AlertDialog {
                 mPositiveView.setLayoutParams(params);
                 mPositiveView.setPadding(0, dpToPx(5.0f), 0, dpToPx(5.0f));
                 mPositiveView.setText(mPositiveText);
-                mPositiveView.setTextSize(spToPx(5.0f));
+                mPositiveView.setTextSize(spToPx(14.0f));
                 mPositiveView.setTextColor(Color.parseColor("#f44336"));
                 mPositiveView.setTag(AlertDialog.BUTTON_POSITIVE);
                 mPositiveView.setOnClickListener(mSheetItemOnClickListener);
@@ -227,7 +227,7 @@ public class ActionSheetDialog extends AlertDialog {
                     sheetItemView.setLayoutParams(params);
                     sheetItemView.setPadding(0, dpToPx(5.0f), 0, dpToPx(5.0f));
                     sheetItemView.setText(item.text);
-                    sheetItemView.setTextSize(spToPx(5.0f));
+                    sheetItemView.setTextSize(spToPx(14.0f));
                     sheetItemView.setTextColor(item.textColor);
                     sheetItemView.setTag(i);
                     mSheetItemContainer.addView(sheetItemView);
