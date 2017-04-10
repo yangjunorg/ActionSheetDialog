@@ -33,6 +33,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,6 +41,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -51,6 +53,7 @@ import java.util.List;
  */
 
 public class ActionSheetDialog extends AlertDialog {
+    private static final String TAG = "ActionSheetDialog";
     protected ActionSheetDialog(Context context) {
         super(context);
     }
@@ -122,15 +125,15 @@ public class ActionSheetDialog extends AlertDialog {
 
         @Override
         public AlertDialog.Builder setPositiveButton(CharSequence text, OnClickListener listener) {
-            mNegativeText = (String) text;
-            mNegativeClickListener = listener;
+            mPositiveText = (String) text;
+            mPositiveClickListener = listener;
             return this;
         }
 
         public AlertDialog.Builder addActionSheetItem(CharSequence text, int textColor, ActionSheetItemClickListener listener) {
             if (null != text && !TextUtils.isEmpty(text)) {
                 if (textColor <= 0)
-                    textColor = Color.parseColor("#2196f3");
+                    textColor = Color.parseColor("#00beb4");
                 ActionSheetItem actionSheetItem = new ActionSheetItem(textColor, (String) text, listener);
                 mActionSheetItems.add(actionSheetItem);
             }
@@ -139,13 +142,17 @@ public class ActionSheetDialog extends AlertDialog {
 
         @Override
         public AlertDialog create() {
-
-
             mActionSheetDialog = new ActionSheetDialog(mContext);
             Window window = mActionSheetDialog.getWindow();
             window.setGravity(Gravity.BOTTOM);
             WindowManager.LayoutParams params = window.getAttributes();
-            params.y = 0;
+            params.y = dpToPx(8.0f);
+            params.x = 0;
+            WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+
+            int width = windowManager.getDefaultDisplay().getWidth();
+            Log.d(TAG, "create: width: " + width + " paddings: " + dpToPx(8.0f));
+            params.width = width - 2 * dpToPx(8.0f);
             Drawable drawable = new ColorDrawable();
             drawable.setAlpha(0);
             window.setBackgroundDrawable(drawable);
@@ -158,7 +165,7 @@ public class ActionSheetDialog extends AlertDialog {
         }
         TextView mTitleView;
         TextView mMessageView;
-        ScrollView mSheetItemContainer;
+        LinearLayout mSheetItemContainer;
         TextView mCancelView;
         TextView mPositiveView;
         SheetItemOnClickListener mSheetItemOnClickListener = new SheetItemOnClickListener();
@@ -168,7 +175,7 @@ public class ActionSheetDialog extends AlertDialog {
                     .inflate(R.layout.layout_action_sheet_dialog, null);
             mTitleView = (TextView) rootView.findViewById(R.id.tv_title);
             mMessageView = (TextView) rootView.findViewById(R.id.tv_message);
-            mSheetItemContainer = (ScrollView) rootView.findViewById(R.id.scrollView_sheet_list);
+            mSheetItemContainer = (LinearLayout) rootView.findViewById(R.id.scrollView_sheet_list);
             mCancelView = (TextView) rootView.findViewById(R.id.tv_cancel);
             handleTitle();
             handleMessage();
@@ -184,14 +191,16 @@ public class ActionSheetDialog extends AlertDialog {
                 mPositiveView = new TextView(mContext);
                 mPositiveView.setGravity(Gravity.CENTER);
                 ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                        dpToPx(48.0f));
                 mPositiveView.setLayoutParams(params);
-                mPositiveView.setPadding(0, dpToPx(5.0f), 0, dpToPx(5.0f));
+               // mPositiveView.setPadding(0, dpToPx(5.0f), 0, dpToPx(5.0f));
                 mPositiveView.setText(mPositiveText);
-                mPositiveView.setTextSize(spToPx(14.0f));
-                mPositiveView.setTextColor(Color.parseColor("#f44336"));
+                mPositiveView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15.0f);
+                mPositiveView.setTextColor(Color.parseColor("#de2b2b"));
                 mPositiveView.setTag(AlertDialog.BUTTON_POSITIVE);
                 mPositiveView.setOnClickListener(mSheetItemOnClickListener);
+                mPositiveView.setMinHeight(dpToPx(48.0f));
+                mSheetItemContainer.addView(mPositiveView);
             }
 
         }
@@ -208,6 +217,7 @@ public class ActionSheetDialog extends AlertDialog {
                             if (null != mNegativeClickListener) {
                                 mNegativeClickListener.onClick(mActionSheetDialog, AlertDialog.BUTTON_NEGATIVE);
                             }
+                            mActionSheetDialog.dismiss();
                         }
                     });
                 }
@@ -222,14 +232,16 @@ public class ActionSheetDialog extends AlertDialog {
                     ActionSheetItem item = mActionSheetItems.get(i);
                     TextView sheetItemView = new TextView(mContext);
                     sheetItemView.setGravity(Gravity.CENTER);
+                    sheetItemView.setMinHeight(dpToPx(48.0f));
                     ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT);
+                            dpToPx(48.0f));
                     sheetItemView.setLayoutParams(params);
-                    sheetItemView.setPadding(0, dpToPx(5.0f), 0, dpToPx(5.0f));
+                    //sheetItemView.setPadding(0, dpToPx(5.0f), 0, dpToPx(5.0f));
                     sheetItemView.setText(item.text);
-                    sheetItemView.setTextSize(spToPx(14.0f));
+                    sheetItemView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15.0f);
                     sheetItemView.setTextColor(item.textColor);
                     sheetItemView.setTag(i);
+                    sheetItemView.setOnClickListener(mSheetItemOnClickListener);
                     mSheetItemContainer.addView(sheetItemView);
                 }
 
@@ -256,13 +268,13 @@ public class ActionSheetDialog extends AlertDialog {
             }
         }
         public int dpToPx(float dp) {
-            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                    mContext.getResources().getDisplayMetrics());
+            float scale = mContext.getResources().getDisplayMetrics().density;
+            return (int) (dp * scale + 0.5f);
         }
 
         public int spToPx(float sp) {
-            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp,
-                    mContext.getResources().getDisplayMetrics());
+            float scale = mContext.getResources().getDisplayMetrics().scaledDensity;
+            return (int) (sp * scale + 0.5f);
         }
 
 
@@ -285,10 +297,13 @@ public class ActionSheetDialog extends AlertDialog {
 
             @Override
             public void onClick(View v) {
+
                 int tag = (int) v.getTag();
+                Log.d(TAG, "onClick: tag = " + tag);
                 if (BUTTON_POSITIVE == tag) {
                     if (null != mPositiveClickListener) {
                         mPositiveClickListener.onClick(mActionSheetDialog, BUTTON_POSITIVE);
+                        mActionSheetDialog.dismiss();
                     }
                     mActionSheetDialog.dismiss();
                 } else {

@@ -1,5 +1,6 @@
 package com.android.test.actionsheetdialog;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,10 +21,17 @@ public class MainActivity extends AppCompatActivity implements ActionSheetDialog
             @Override
             public void onClick(View v) {
                 ActionSheetDialog dialog = (ActionSheetDialog) new ActionSheetDialog.ActionSheetBuilder(MainActivity.this)
-                        .addActionSheetItem("确认", Color.parseColor("#f44336"), new ActionSheetDialog.ActionSheetBuilder.ActionSheetItemClickListener() {
+                        .addActionSheetItem("Item1", Color.parseColor("#f44336"), new ActionSheetDialog.ActionSheetBuilder.ActionSheetItemClickListener() {
                             @Override
                             public void onClick(int position) {
-                                Toast.makeText(MainActivity.this, "onClick()", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "onClick() item= " + position, Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setMessage("13222028712")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(MainActivity.this, "onClick() dialog", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .setCancelable(true)
