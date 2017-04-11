@@ -2,6 +2,7 @@ package com.android.test.actionsheetdialog;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,15 +17,16 @@ public class MainActivity extends AppCompatActivity implements ActionSheetDialog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Button startActionSheet = (Button) findViewById(R.id.btn_start_action_sheet);
         startActionSheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActionSheetDialog dialog = (ActionSheetDialog) new ActionSheetDialog.ActionSheetBuilder(MainActivity.this)
-                        .addActionSheetItem("Item1", Color.parseColor("#f44336"), new ActionSheetDialog.ActionSheetBuilder.ActionSheetItemClickListener() {
+                ActionSheetDialog dialog = new ActionSheetDialog.ActionSheetBuilder(MainActivity.this)
+                        .setItems(new CharSequence[]{"Item1", "Item2", "Item3"}, new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(int position) {
-                                Toast.makeText(MainActivity.this, "onClick() item= " + position, Toast.LENGTH_SHORT).show();
+                            public void onClick(DialogInterface dialog, int which) {
+
                             }
                         })
                         .setMessage("13222028712")

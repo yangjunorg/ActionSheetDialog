@@ -27,9 +27,11 @@ package com.android.actionsheetdialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ArrayRes;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.text.TextUtils;
@@ -86,37 +88,37 @@ public class ActionSheetDialog extends AlertDialog {
         }
 
         @Override
-        public AlertDialog.Builder setCancelable(boolean cancelable) {
+        public ActionSheetBuilder setCancelable(boolean cancelable) {
             mCancelable = cancelable;
             return this;
         }
 
         @Override
-        public AlertDialog.Builder setMessage(CharSequence message) {
+        public ActionSheetBuilder setMessage(CharSequence message) {
             mMessage = (String) message;
             return this;
         }
 
         @Override
-        public AlertDialog.Builder setMessage(@StringRes int messageId) {
+        public ActionSheetBuilder setMessage(@StringRes int messageId) {
             mMessage = mContext.getString(messageId);
             return this;
         }
 
         @Override
-        public AlertDialog.Builder setTitle(CharSequence title) {
+        public ActionSheetBuilder setTitle(CharSequence title) {
             mTitle = (String) title;
             return this;
         }
 
         @Override
-        public AlertDialog.Builder setTitle(@StringRes int titleId) {
+        public ActionSheetBuilder setTitle(@StringRes int titleId) {
             mTitle = mContext.getString(titleId);
             return this;
         }
 
         @Override
-        public AlertDialog.Builder setNegativeButton(CharSequence text, OnClickListener listener) {
+        public ActionSheetBuilder setNegativeButton(CharSequence text, OnClickListener listener) {
             mNegativeText = (String) text;
             mNegativeClickListener = listener;
             mCancelable = true;
@@ -124,24 +126,29 @@ public class ActionSheetDialog extends AlertDialog {
         }
 
         @Override
-        public AlertDialog.Builder setPositiveButton(CharSequence text, OnClickListener listener) {
+        public ActionSheetBuilder setPositiveButton(CharSequence text, OnClickListener listener) {
             mPositiveText = (String) text;
             mPositiveClickListener = listener;
             return this;
         }
 
-        public AlertDialog.Builder addActionSheetItem(CharSequence text, int textColor, ActionSheetItemClickListener listener) {
-            if (null != text && !TextUtils.isEmpty(text)) {
-                if (textColor <= 0)
-                    textColor = Color.parseColor("#00beb4");
-                ActionSheetItem actionSheetItem = new ActionSheetItem(textColor, (String) text, listener);
-                mActionSheetItems.add(actionSheetItem);
+        @Override
+        public ActionSheetBuilder setItems(CharSequence[] items, OnClickListener listener) {
+            for (int i = 0; i < items.length; i++) {
+                ActionSheetItem item = new ActionSheetItem((String) items[i], listener);
+                mActionSheetItems.add(item);
             }
             return this;
         }
 
         @Override
-        public AlertDialog create() {
+        public ActionSheetBuilder setItems(@ArrayRes int itemsId, OnClickListener listener) {
+            this.setItems(mContext.getResources().getStringArray(itemsId), listener);
+            return this;
+        }
+
+        @Override
+        public ActionSheetDialog create() {
             mActionSheetDialog = new ActionSheetDialog(mContext);
             Window window = mActionSheetDialog.getWindow();
             window.setGravity(Gravity.BOTTOM);
@@ -193,7 +200,7 @@ public class ActionSheetDialog extends AlertDialog {
                 ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         dpToPx(48.0f));
                 mPositiveView.setLayoutParams(params);
-               // mPositiveView.setPadding(0, dpToPx(5.0f), 0, dpToPx(5.0f));
+                //mPositiveView.setPadding(0, dpToPx(5.0f), 0, dpToPx(5.0f));
                 mPositiveView.setText(mPositiveText);
                 mPositiveView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15.0f);
                 mPositiveView.setTextColor(Color.parseColor("#de2b2b"));
@@ -239,7 +246,7 @@ public class ActionSheetDialog extends AlertDialog {
                     //sheetItemView.setPadding(0, dpToPx(5.0f), 0, dpToPx(5.0f));
                     sheetItemView.setText(item.text);
                     sheetItemView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15.0f);
-                    sheetItemView.setTextColor(item.textColor);
+                    sheetItemView.setTextColor(Color.parseColor("#00beb4"));
                     sheetItemView.setTag(i);
                     sheetItemView.setOnClickListener(mSheetItemOnClickListener);
                     mSheetItemContainer.addView(sheetItemView);
@@ -279,11 +286,10 @@ public class ActionSheetDialog extends AlertDialog {
 
 
         static class ActionSheetItem {
-            int textColor;
+
             String text;
-            ActionSheetItemClickListener listener;
-            public ActionSheetItem(int textColor, String text, ActionSheetItemClickListener listener) {
-                this.textColor = textColor;
+            OnClickListener listener;
+            public ActionSheetItem(String text, OnClickListener listener) {
                 this.text = text;
                 this.listener = listener;
             }
@@ -307,7 +313,7 @@ public class ActionSheetDialog extends AlertDialog {
                     }
                     mActionSheetDialog.dismiss();
                 } else {
-                    mActionSheetItems.get(tag).listener.onClick(tag);
+                    mActionSheetItems.get(tag).listener.onClick(mActionSheetDialog, tag);
                 }
             }
         }
