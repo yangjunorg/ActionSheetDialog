@@ -2,25 +2,37 @@
 <resources>
     
     <style name="ActionSheetDialogBase">
-        <item name="com.android.actionsheetdialog:titleTextColor">#d4000000</item>
-        <item name="com.android.actionsheetdialog:titleTextSize">20dp</item>
-        <item name="com.android.actionsheetdialog:titleHeight">42dp</item>
-        <item name="com.android.actionsheetdialog:messageTextColor">#73000000</item>
-        <item name="com.android.actionsheetdialog:messageTextSize">12sp</item>
-        <item name="com.android.actionsheetdialog:messageHeight">42dp</item>
-        <item name="com.android.actionsheetdialog:itemTextColor">#00beb4</item>
-        <item name="com.android.actionsheetdialog:itemTextSize">15sp</item>
-        <item name="com.android.actionsheetdialog:itemHeight">48dp</item>
-        <item name="com.android.actionsheetdialog:positiveTextColor">#de2b2b</item>
-        <item name="com.android.actionsheetdialog:positiveTextSize">15sp</item>
-        <item name="com.android.actionsheetdialog:positiveHeight">48dp</item>
-        <item name="com.android.actionsheetdialog:cancelTextColor">#00beb4</item>
-        <item name="com.android.actionsheetdialog:cancelTextSize">15sp</item>
-        <item name="com.android.actionsheetdialog:cancelHeight">48dp</item>
-        <item name="com.android.actionsheetdialog:cancelTopMargins">8dp</item>
-        <item name="com.android.actionsheetdialog:cancelBackground">@drawable/radios</item>
-        <item name="com.android.actionsheetdialog:sheetMargins">8dp</item>
-        <item name="com.android.actionsheetdialog:contentBackground">@drawable/radios</item>
+        <item name="titleTextColor">#d4000000</item>
+        <item name="titleTextSize">20dp</item>
+        <item name="titleHeight">42dp</item>
+        <item name="titleDivider">@drawable/divider_bg</item>
+        <item name="titleDividerInset">18dp</item>
+        <item name="messageTextColor">#73000000</item>
+        <item name="messageTextSize">12sp</item>
+        <item name="messageHeight">42dp</item>
+        <item name="messageDivider">@drawable/divider_bg</item>
+        <item name="messageDividerInset">18dp</item>
+        <item name="itemTextColor">#00beb4</item>
+        <item name="itemTextSize">15sp</item>
+        <item name="itemDivider">@drawable/divider_bg</item>
+        <item name="itemDividerInset">18dp</item>
+        <item name="itemHeight">48dp</item>
+        <item name="positiveTextColor">#de2b2b</item>
+        <item name="positiveTextSize">15sp</item>
+        <item name="positiveHeight">48dp</item>
+        <item name="cancelTextColor">#00beb4</item>
+        <item name="cancelTextSize">15sp</item>
+        <item name="cancelHeight">48dp</item>
+        <item name="cancelTopMargins">8dp</item>
+        <item name="cancelBackground">@drawable/radios</item>
+        <item name="sheetMargins">8dp</item>
+        <item name="contentBackground">@drawable/radios</item>
+        <item name="windowAnimations">@style/ActionSheetDialogAnimation</item>
+    </style>
+
+    <style name="ActionSheetDialogAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/action_sheet_dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/action_sheet_dialog_exit</item>
     </style>
 
 

@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements ActionSheetDialog
                             }
                         })
                         .setMessage("13222028712")
+                        .setTitle("电话号码")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

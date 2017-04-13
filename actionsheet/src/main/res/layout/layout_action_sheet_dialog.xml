@@ -11,14 +11,14 @@
         android:background="@drawable/radios"
         android:orientation="vertical">
         <TextView
-            style="@style/ActionSheetTextBase.Title"
             android:id="@+id/tv_title"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <TextView
-            style="@style/ActionSheetTextBase.Message"
             android:id="@+id/tv_message"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

@@ -45,6 +45,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -71,6 +74,14 @@ public class ActionSheetDialog extends AlertDialog {
 
     }
 
+    @Override
+    public Button getButton(int whichButton) {
+        switch (whichButton) {
+
+        }
+        return super.getButton(whichButton);
+    }
+
     public static class ActionSheetBuilder extends AlertDialog.Builder {
         private Context mContext;
         private String mTitle;
@@ -87,12 +98,18 @@ public class ActionSheetDialog extends AlertDialog {
         private int mTitleTextColor;
         private int mTitleTextSize;
         private int mTitleHeight;
+        private Drawable mTitleDivider;
+        private int mTitleDividerInset;
         private int mMessageTextColor;
         private int mMessageTextSize;
         private int mMessageHeight;
+        private Drawable mMessageDivider;
+        private int mMessageDividerInset;
         private int mItemTextColor;
         private int mItemTextSize;
         private int mItemHeight;
+        private Drawable mItemDivider;
+        private int mItemDividerInset;
         private int mPositiveTextColor;
         private int mPositiveTextSize;
         private int mPositiveHeight;
@@ -104,6 +121,7 @@ public class ActionSheetDialog extends AlertDialog {
         private int mLayoutMargins;
         private int mSheetMargins;
         private Drawable mContentBackground;
+        private int mWindowAnimationId;
         private static final int DEFAULT_VALUE = -1;
 
 
@@ -134,23 +152,34 @@ public class ActionSheetDialog extends AlertDialog {
                 mTitleTextColor = typedArray.getColor(R.styleable.ActionSheetDialog_titleTextColor, mTitleTextColor);
                 mTitleTextSize = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_titleTextSize, mTitleTextSize);
                 mTitleHeight = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_titleHeight, mTitleHeight);
+                mTitleDivider = typedArray.getDrawable(R.styleable.ActionSheetDialog_titleDivider);
+                mTitleDividerInset = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_titleDividerInset, mTitleDividerInset);
+
                 mMessageTextColor = typedArray.getColor(R.styleable.ActionSheetDialog_messageTextColor, mMessageTextColor);
                 mMessageTextSize = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_messageTextSize, mMessageTextSize);
                 mMessageHeight = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_messageHeight, mMessageHeight);
+                mMessageDivider = typedArray.getDrawable(R.styleable.ActionSheetDialog_messageDivider);
+                mMessageDividerInset = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_messageDividerInset, mMessageDividerInset);
+
                 mItemTextColor = typedArray.getColor(R.styleable.ActionSheetDialog_itemTextColor, mItemTextColor);
                 mItemTextSize = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_itemTextSize, mItemTextSize);
                 mItemHeight = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_itemHeight, mItemHeight);
+                mItemDivider = typedArray.getDrawable(R.styleable.ActionSheetDialog_itemDivider);
+                mItemDividerInset = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_itemDividerInset, mItemDividerInset);
+
                 mPositiveTextColor = typedArray.getColor(R.styleable.ActionSheetDialog_positiveTextColor, mPositiveTextColor);
                 mPositiveTextSize = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_positiveTextSize, mPositiveTextSize);
                 mPositiveHeight = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_positiveHeight, mPositiveHeight);
+
                 mCancelTextColor = typedArray.getColor(R.styleable.ActionSheetDialog_cancelTextColor, mCancelTextColor);
                 mCancelTextSize = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_cancelTextSize, mCancelTextSize);
                 mCancelHeight = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_cancelHeight, mCancelHeight);
                 mCancelBackground = typedArray.getDrawable(R.styleable.ActionSheetDialog_cancelBackground);
                 mCancelTopMagin = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_cancelTopMargins, mCancelTopMagin);
+
                 mSheetMargins = typedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_sheetMargins, mSheetMargins);
                 mContentBackground = typedArray.getDrawable(R.styleable.ActionSheetDialog_contentBackground);
-
+                mWindowAnimationId = typedArray.getResourceId(R.styleable.ActionSheetDialog_windowAnimations, mWindowAnimationId);
             }
         }
 
@@ -159,22 +188,34 @@ public class ActionSheetDialog extends AlertDialog {
                 mTitleTextColor = defaultTypedArray.getColor(R.styleable.ActionSheetDialog_titleTextColor, DEFAULT_VALUE);
                 mTitleTextSize = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_titleTextSize, DEFAULT_VALUE);
                 mTitleHeight = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_titleHeight, DEFAULT_VALUE);
+                mTitleDivider = defaultTypedArray.getDrawable(R.styleable.ActionSheetDialog_titleDivider);
+                mTitleDividerInset = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_titleDividerInset, DEFAULT_VALUE);
+
                 mMessageTextColor = defaultTypedArray.getColor(R.styleable.ActionSheetDialog_messageTextColor, DEFAULT_VALUE);
                 mMessageTextSize = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_messageTextSize, DEFAULT_VALUE);
                 mMessageHeight = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_messageHeight, DEFAULT_VALUE);
+                mMessageDivider = defaultTypedArray.getDrawable(R.styleable.ActionSheetDialog_messageDivider);
+                mMessageDividerInset = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_messageDividerInset, DEFAULT_VALUE);
+
                 mItemTextColor = defaultTypedArray.getColor(R.styleable.ActionSheetDialog_itemTextColor, DEFAULT_VALUE);
                 mItemTextSize = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_itemTextSize, DEFAULT_VALUE);
                 mItemHeight = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_itemHeight, DEFAULT_VALUE);
+                mItemDivider = defaultTypedArray.getDrawable(R.styleable.ActionSheetDialog_itemDivider);
+                mItemDividerInset = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_itemDividerInset, DEFAULT_VALUE);
+
                 mPositiveTextColor = defaultTypedArray.getColor(R.styleable.ActionSheetDialog_positiveTextColor, DEFAULT_VALUE);
                 mPositiveTextSize = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_positiveTextSize, DEFAULT_VALUE);
                 mPositiveHeight = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_positiveHeight, DEFAULT_VALUE);
+
                 mCancelTextColor = defaultTypedArray.getColor(R.styleable.ActionSheetDialog_cancelTextColor, DEFAULT_VALUE);
                 mCancelTextSize = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_cancelTextSize, DEFAULT_VALUE);
                 mCancelHeight = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_cancelHeight, DEFAULT_VALUE);
                 mCancelBackground = defaultTypedArray.getDrawable(R.styleable.ActionSheetDialog_cancelBackground);
                 mCancelTopMagin = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_cancelTopMargins, DEFAULT_VALUE);
+
                 mSheetMargins = defaultTypedArray.getDimensionPixelSize(R.styleable.ActionSheetDialog_sheetMargins, DEFAULT_VALUE);
                 mContentBackground = defaultTypedArray.getDrawable(R.styleable.ActionSheetDialog_contentBackground);
+                mWindowAnimationId = defaultTypedArray.getResourceId(R.styleable.ActionSheetDialog_windowAnimations, DEFAULT_VALUE);
 
             }
         }
@@ -245,14 +286,14 @@ public class ActionSheetDialog extends AlertDialog {
             mActionSheetDialog = new ActionSheetDialog(mContext);
             Window window = mActionSheetDialog.getWindow();
             window.setGravity(Gravity.BOTTOM);
+            window.setWindowAnimations(mWindowAnimationId);
             WindowManager.LayoutParams params = window.getAttributes();
             params.y = dpToPx(8.0f);
             params.x = 0;
             WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
 
             int width = windowManager.getDefaultDisplay().getWidth();
-            Log.d(TAG, "create: width: " + width + " paddings: " + dpToPx(8.0f));
-            params.width = width - 2 * dpToPx(8.0f);
+            params.width = width - 2 * mSheetMargins;
             Drawable drawable = new ColorDrawable();
             drawable.setAlpha(0);
             window.setBackgroundDrawable(drawable);
@@ -273,6 +314,7 @@ public class ActionSheetDialog extends AlertDialog {
         private void initViews() {
             View rootView = LayoutInflater.from(mContext)
                     .inflate(R.layout.layout_action_sheet_dialog, null);
+
             mTitleView = (TextView) rootView.findViewById(R.id.tv_title);
             mMessageView = (TextView) rootView.findViewById(R.id.tv_message);
             mSheetItemContainer = (LinearLayout) rootView.findViewById(R.id.scrollView_sheet_list);
@@ -284,6 +326,18 @@ public class ActionSheetDialog extends AlertDialog {
             handlePositive();
 
             mActionSheetDialog.setView(rootView);
+
+
+        }
+
+        private ImageView createDivider(Drawable background, int inset) {
+            ImageView divider = new ImageView(mContext);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            Log.d(TAG, "createDivider: inset = " + inset);
+            params.setMargins(inset, 0, inset, 0);
+            divider.setBackground(background);
+            divider.setMinimumHeight(1);
+            return divider;
         }
 
         private void handlePositive() {
@@ -300,6 +354,7 @@ public class ActionSheetDialog extends AlertDialog {
                 mPositiveView.setTag(AlertDialog.BUTTON_POSITIVE);
                 mPositiveView.setOnClickListener(mSheetItemOnClickListener);
                 mPositiveView.setMinHeight(mPositiveHeight);
+                mSheetItemContainer.addView(createDivider(mItemDivider, mItemDividerInset));
                 mSheetItemContainer.addView(mPositiveView);
             }
 
@@ -338,7 +393,7 @@ public class ActionSheetDialog extends AlertDialog {
             if (null == mActionSheetItems || mActionSheetItems.isEmpty()) {
                 mSheetItemContainer.setVisibility(View.GONE);
             } else {
-                for (int i = 0; i < mActionSheetItems.size(); i++) {
+                for (int i = 0, size = mActionSheetItems.size(); i < size; i++) {
                     ActionSheetItem item = mActionSheetItems.get(i);
                     TextView sheetItemView = new TextView(mContext);
                     sheetItemView.setGravity(Gravity.CENTER);
@@ -348,11 +403,14 @@ public class ActionSheetDialog extends AlertDialog {
                     //sheetItemView.setPadding(0, dpToPx(5.0f), 0, dpToPx(5.0f));
                     sheetItemView.setText(item.text);
                     sheetItemView.setMinHeight(mItemHeight);
-                    sheetItemView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mItemTextSize);
+                    sheetItemView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mItemTextSize);
                     sheetItemView.setTextColor(mItemTextColor);
                     sheetItemView.setTag(i);
                     sheetItemView.setOnClickListener(mSheetItemOnClickListener);
                     mSheetItemContainer.addView(sheetItemView);
+                    if (i < (size - 1)) {
+                        mSheetItemContainer.addView(createDivider(mItemDivider, mItemDividerInset));
+                    }
                 }
 
             }
@@ -364,6 +422,7 @@ public class ActionSheetDialog extends AlertDialog {
                     mMessageView.setVisibility(View.GONE);
                 } else {
                     mMessageView.setMinHeight(mMessageHeight);
+                    mMessageView.setGravity(Gravity.CENTER);
                     mMessageView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mMessageTextSize);
                     mMessageView.setTextColor(mMessageTextColor);
                     mMessageView.setText(mMessage);
@@ -377,6 +436,7 @@ public class ActionSheetDialog extends AlertDialog {
                     mTitleView.setVisibility(View.GONE);
                 } else {
                     mTitleView.setMinHeight(mTitleHeight);
+                    mTitleView.setGravity(Gravity.CENTER);
                     mTitleView.setTextColor(mTitleTextColor);
                     mTitleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTitleTextSize);
                     mTitleView.setText(mTitle);
