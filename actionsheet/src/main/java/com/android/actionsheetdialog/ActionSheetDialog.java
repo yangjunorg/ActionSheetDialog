@@ -297,7 +297,7 @@ public class ActionSheetDialog extends AlertDialog {
             window.setGravity(Gravity.BOTTOM);
             window.setWindowAnimations(mWindowAnimationId);
             WindowManager.LayoutParams params = window.getAttributes();
-            params.y = dpToPx(8.0f);
+            params.y = dpToPx(mSheetMargins);
             params.x = 0;
             WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
 
@@ -318,6 +318,7 @@ public class ActionSheetDialog extends AlertDialog {
         TextView mMessageView;
         ImageView mMessageDividerView;
         LinearLayout mSheetItemContainer;
+        LinearLayout mContentPanel;
         TextView mCancelView;
         TextView mPositiveView;
         SheetItemOnClickListener mSheetItemOnClickListener = new SheetItemOnClickListener();
@@ -326,13 +327,16 @@ public class ActionSheetDialog extends AlertDialog {
             View rootView = LayoutInflater.from(mContext)
                     .inflate(R.layout.layout_action_sheet_dialog, null);
 
+            mContentPanel = (LinearLayout) rootView.findViewById(R.id.content_panel);
             mTitleView = (TextView) rootView.findViewById(R.id.tv_title);
             mTitleDividerView = (ImageView) rootView.findViewById(R.id.title_divider);
             mMessageView = (TextView) rootView.findViewById(R.id.tv_message);
             mMessageDividerView = (ImageView) rootView.findViewById(R.id.message_divider);
             mSheetItemContainer = (LinearLayout) rootView.findViewById(R.id.scrollView_sheet_list);
             mCancelView = (TextView) rootView.findViewById(R.id.tv_cancel);
-
+            if (null != mContentBackground) {
+                mContentPanel.setBackground(mContentBackground);
+            }
             handleTitle();
             handleMessage();
             handleContent();

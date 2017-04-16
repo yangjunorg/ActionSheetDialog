@@ -5,10 +5,9 @@
               android:layout_height="match_parent">
 
     <LinearLayout
-
+        android:id="@+id/content_panel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/radios"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tv_title"
@@ -47,7 +46,6 @@
 
 
     <TextView
-        style="@style/ActionSheetTextBase.Cancel"
         android:id="@+id/tv_cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
