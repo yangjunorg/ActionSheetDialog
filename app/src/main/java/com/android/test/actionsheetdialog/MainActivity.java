@@ -48,14 +48,14 @@ public class MainActivity extends AppCompatActivity implements ActionSheetDialog
         startActionSheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActionSheetDialog dialog = new ActionSheetDialog.ActionSheetBuilder(MainActivity.this)
+                ActionSheetDialog dialog = new ActionSheetDialog.ActionSheetBuilder(MainActivity.this, R.style.ActionSheetDialogBase_SampleStyle)
                         .setItems(new CharSequence[]{"Item1", "Item2", "Item3"}, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Toast.makeText(MainActivity.this, "onClick Item: " + which, Toast.LENGTH_SHORT).show();
                             }
                         })
-                        .setMessage("13222028712")
+                        .setMessage("************")
                         .setTitle("电话号码")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override

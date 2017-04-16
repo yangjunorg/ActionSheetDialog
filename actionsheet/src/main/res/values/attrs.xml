@@ -32,18 +32,21 @@
         <attr name="titleHeight" format="dimension" />
         <attr name="titleDivider" format="reference" />
         <attr name="titleDividerInset" format="dimension" />
+        <attr name="titleDividerHeight" format="dimension" />
         <!-- Attributes for message-->
         <attr name="messageTextColor" format="color" />
         <attr name="messageTextSize" format="dimension" />
         <attr name="messageHeight" format="dimension" />
         <attr name="messageDivider" format="reference" />
         <attr name="messageDividerInset" format="dimension" />
+        <attr name="messageDividerHeight" format="dimension" />
         <!-- Attributes for items-->
         <attr name="itemTextColor" format="color" />
         <attr name="itemTextSize" format="dimension" />
         <attr name="itemHeight" format="dimension" />
         <attr name="itemDivider" format="reference" />
         <attr name="itemDividerInset" format="dimension" />
+        <attr name="itemDividerHeight" format="dimension" />
         <!-- Attributes for positive button-->
         <attr name="positiveTextColor" format="color" />
         <attr name="positiveTextSize" format="dimension" />

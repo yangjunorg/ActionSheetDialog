@@ -8,5 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ActionSheetDialogBase.SampleStyle">
+        <item name="cancelTextColor">#de2b2b</item>
+    </style>
+
 
 </resources>
